@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <form action="/users/signup" method="POST">
+    <h2>SIGNUP</h2>
+    <ul>
+        <% if(typeof errors != 'undefined') { %>
+            <% errors.forEach(error => { %>
+
+            <li><%= error.message %></li>
+
+       <% }) %>
+
+        <% } %>
+    </ul>
+
+    <div>
+        <input type="text" id="fname" name="fname" placeholder="First Name" required>
+    </div>
+    <div>
+        <input type="text" id="lname" name="lname" placeholder="Last Name" required>
+    </div>
+    <div>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+    </div>
+    <div>
+        <input type="password" id="pwd" name="pwd" placeholder="Password" required>
+    </div>
+    <div>
+        <input type="password" id="pwd2" name="pwd2" placeholder="Confirm Password" required>
+    </div>
+
+    <div> <input type="submit" value="Signup"> </div>
+
+    <a href="/users/login">Already signed up? Login here</a>
+
+</form>
+</body>
+</html>

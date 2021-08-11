@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <a href="/users/login">Logout</a>
+    <h1>Hello <%= user %></h1>
+    <div class="logo-div">
+        <img src="../assets/logo1.png" alt="video-viewer-logo">
+    </div>
+    <div class="head-div">
+        TOP 3 MUSIC VIDEOS OF THE WEEK
+    </div>
+<div class="vid-num">
+    1
+</div>
+
+
+<div class="video-div">
+    <button>Previous</button>
+    <video id="videoPlayer" width="750" controls autoplay>
+            <source src="/video" type="video/mp4" />
+    </video>
+    <button>Next</button>
+</div>
+    
+</body>
+</html>
