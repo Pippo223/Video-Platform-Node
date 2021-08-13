@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+    <title>Admin Login</title>
+</head>
+<body>
+    
+    <form action="/admin/login" method="POST">
+    <h2>ADMIN LOGIN</h2>
+     <ul>
+        <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+        <li><%= error.message %></li>
+        <% }) %> <% } %>
+      </ul>
+
+    <ul>
+        <% if(messages.success_msg) { %>
+            <li><%= messages.success_msg %></li>
+        <% } %>
+    </ul>
+    <ul>
+        <% if(messages.error) { %>
+            <li><%= messages.error %></li>
+        <% } %>
+    </ul> 
+  
+    <div>
+        <input type="email" id="adEmail" name="adEmail" placeholder="Email" required>
+    </div>
+    <div>
+        <input type="password" id="adPwd" name="adPwd" placeholder="Password" required>
+    </div>
+
+        <input type="submit" value="Admin Login">
+
+</form>
+
+
+</body>
+</html>

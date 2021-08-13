@@ -9,13 +9,23 @@
 </head>
 <body>
     
-    <form action="/users/login" method="POST"></form>
+    <form action="/users/login" method="POST">
     <h2>LOGIN</h2>
+    <ul>
+        <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+        <li><%= error.message %></li>
+        <% }) %> <% } %>
+      </ul>
+
     <ul>
         <% if(messages.success_msg) { %>
             <li><%= messages.success_msg %></li>
         <% } %>
-        
+    </ul>
+    <ul>
+        <% if(messages.error) { %>
+            <li><%= messages.error %></li>
+        <% } %>
     </ul>
   
     <div>

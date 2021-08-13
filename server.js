@@ -2,11 +2,26 @@ const express = require('express');
 const app = express();
 const PORT = process.env.port || 3000;
 
-const fs = require("fs");
-const { pool } = require('./config/dbConfig');
-const bcrypt = require('bcrypt');
-const session = require('express-session');
+//const fs = require("fs");
+
+const { pool } = require('./config/dbConfig'); //called to query the database
+const bcrypt = require('bcrypt'); //called to hash/encrypt password
+const session = require('express-session');//called to create session for user 
 const flash = require('express-flash');
+const passport = require('passport');
+const initializePassport = require('./config/UserPassportConfig');
+
+//ejs middleware
+app.set('view engine', 'ejs');
+
+const apiRoute = require('./routes/api'); //the api route 
+app.use('/api', apiRoute);
+
+const adminRoute = require('./routes/admin'); //the admin route 
+app.use('/admin', adminRoute);
+
+
+initializePassport(passport);
 
 app.use(express.urlencoded({extended: false}));
 app.use(session({
@@ -15,32 +30,33 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(flash());
 
-//ejs middleware
-app.set('view engine', 'ejs')
-
-//import authentication route
-const authRoute = require('./routes/auth')
-
-//route middleware
-app.use('/api/user', authRoute);
 
 app.get("/", function (req, res) {
   res.render("index");
 });
 
-app.get("/users/signup", function (req, res) {
-  res.render("signup");
+app.get("/users/signup", checkAuthenticated, function (req, res) {
+  res.render("users/signup");
 });
 
-app.get("/users/login", function (req, res) {
-  res.render("login");
+app.get("/users/login", checkAuthenticated, function (req, res) {
+  res.render("users/login");
 });
 
-app.get("/users/dashboard", function (req, res) {
-  res.render("dashboard", { user: 'Phil' });
+app.get('/users/dashboard', checkNotAuthenticated, function (req, res) {
+  res.render('users/dashboard', { user: req.user.fname });
 });
+
+app.get('/users/logout', function(req, res) {
+  req.logOut();
+  req.flash('success_msg', 'You are logged out');
+  res.redirect('/users/login');
+}) 
 
 app.post("/users/signup", async function (req, res) {
   let { fname, lname, email, pwd, pwd2 } = req.body;
@@ -59,7 +75,7 @@ if(pwd != pwd2) {
   errors.push({message: "Passwords do not match"});
 }
 if(errors.length > 0) {
-  res.render('signup', { errors })
+  res.render('users/signup', { errors })
 }
 else {
   //validation passed
@@ -67,10 +83,7 @@ else {
   console.log(hashedPassword);
 
 pool.query(
-  `SELECT * FROM users 
-  WHERE email = $1`, 
-  [email], 
-  (err, results)  => {
+  `SELECT * FROM users WHERE email = $1`, [email], (err, results)  => {
    if(err) {
      throw err;
    }
@@ -79,7 +92,7 @@ pool.query(
 
   if (results.rows.length > 0) {
       errors.push({message: 'Email already registered'});
-      res.render('signup', { errors });
+      res.render('users/signup', { errors });
   } else {
     pool.query(
       `INSERT INTO users (fname, lname, email, password) 
@@ -94,56 +107,56 @@ pool.query(
       }
     )
   }
+})
+
+
+  }
 });
 
+app.post('/users/login', passport.authenticate('local', 
+{
+  successRedirect: '/users/dashboard',
+  failureRedirect: '/users/login',
+  failureFlash: true
+})
+);
 
+app.get('/admin/login', checkAuthenticated, function(req, res) {
+  res.render('admin/adminLogin')
+})
+
+//temp
+app.post('/admin/login', function (req, res) {
+  let email = req.body.adEmail
+  let pwd = req.body.adPwd
+  console.log({email, pwd})
+pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
+  if (err) {
+    throw err
+  }
+if(results.rows[0].password === pwd){
+  console.log(result.rows[0])
+}
+})
+
+})
+
+
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/dashboard");
+  }
+  next();
 }
 
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/users/login");
+}
 
-
-});
-
-
-//video upload
- app.get("/", function (req, res) {  
-  res.sendFile(__dirname + "index");
-});
-
-
-app.get("/video", function (req, res) {
-    // Ensure there is a range given for the video
-    const range = req.headers.range;
-    if (!range) {
-      res.status(400).send("Requires Range header");
-    }
-
- // get video stats
- const videoPath = "assets/rollies-and-cigars.mp4";
- const videoSize = fs.statSync(videoPath).size;
-
- const chunkSize = 10 ** 6; // 1MB
-  const start = Number(range.replace(/\D/g, ""));
-  const end = Math.min(start + chunkSize, videoSize - 1);
-
-// Create headers
-const contentLength = end - start + 1;
-const headers = {
-  "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-  "Accept-Ranges": "bytes",
-  "Content-Length": contentLength,
-  "Content-Type": "video/mp4",
-};
-
-// HTTP Status 206 for Partial Content
-res.writeHead(206, headers);
-
-// create video read stream for this particular chunk
-const videoStream = fs.createReadStream(videoPath, { start, end });
-
-// Stream the video chunk to the client
-videoStream.pipe(res);
-
-}); 
 
 app.listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
