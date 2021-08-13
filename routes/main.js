@@ -8,9 +8,6 @@ const flash = require('express-flash');
 const passport = require('passport');
 const initializePassport = require('../config/UserPassportConfig');
 
-//ejs middleware
-//app.set('view engine', 'ejs');
-
 initializePassport(passport);
 
 router.use(express.urlencoded({extended: false}));

@@ -38,8 +38,8 @@ function initialize(passport) {
     passport.use(
         new LocalStrategy(
             {
-                usernameField: 'username',
-                passwordField: 'password'
+                usernameField: 'email',
+                passwordField: 'pwd'
             }, 
             authenticateUser
     )

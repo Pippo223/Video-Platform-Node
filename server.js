@@ -9,24 +9,28 @@ const bcrypt = require('bcrypt'); //called to hash/encrypt password
 const session = require('express-session');//called to create session for user 
 const flash = require('express-flash');
 const passport = require('passport');
-const initializePassport = require('./config/UserPassportConfig');
+const initializePassport = require('./config/AdminPassportConfig');
 
+app.use(express.urlencoded({extended: false}));
 //ejs middleware
 app.set('view engine', 'ejs');
-
-const main = require('./routes/main');
-app.use('/users', main)
-
-const apiRoute = require('./routes/api'); //the api route 
-app.use('/api', apiRoute);
 
 const adminRoute = require('./routes/admin'); //the admin route 
 app.use('/admin', adminRoute);
 
+const main = require('./routes/main');
+app.use('/users', main)
+
+
+
+const apiRoute = require('./routes/api'); //the api route 
+app.use('/api', apiRoute);
+
+
 
 initializePassport(passport);
 
-app.use(express.urlencoded({extended: false}));
+
 app.use(session({
   secret: 'secret',
   resave: false,
@@ -37,6 +41,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
+
+
+app.get('/admin/dashboard', checkNotAuthenticated, function(req, res) {
+  res.render('admin/adminDashboard')
+})
+
+app.post('/admin/login', passport.authenticate('local', 
+ {
+   successRedirect: '/admin/dashboard',
+   failureRedirect: '/admin/login',
+   failureFlash: true
+ })
+ );
 
 
 // app.get("/", function (req, res) {
@@ -124,25 +141,25 @@ app.use(flash());
 // })
 // );
 
-app.get('/admin/login', checkAuthenticated, function(req, res) {
-  res.render('admin/adminLogin')
-})
+// app.get('/admin/login', checkAuthenticated, function(req, res) {
+//   res.render('admin/adminLogin')
+// })
 
 //temp
-app.post('/admin/login', function (req, res) {
-  let email = req.body.adEmail
-  let pwd = req.body.adPwd
-  console.log({email, pwd})
-pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
-  if (err) {
-    throw err
-  }
-if(results.rows[0].password === pwd){
-  console.log(result.rows[0])
-}
-})
+// app.post('/admin/login', function (req, res) {
+//   let email = req.body.adEmail
+//   let pwd = req.body.adPwd
+//   console.log({email, pwd})
+// pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
+//   if (err) {
+//     throw err
+//   }
+// if(results.rows[0].password === pwd){
+//   console.log(result.rows[0])
+// }
+// })
 
-})
+// })
 
 
 

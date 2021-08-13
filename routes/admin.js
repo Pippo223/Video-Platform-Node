@@ -1,15 +1,12 @@
 const express = require('express');
 const admin = express.Router();
-//const jwt = require('jsonwebtoken');
-require("dotenv").config();
-
 const session = require('express-session');//called to create session for admin 
 const flash = require('express-flash');
-const passport = require('passport'); //for passport authentication
+const passport2 = require('passport'); //for passport authentication
 const initializePassport = require('../config/AdminPassportConfig'); //require passport configuration code for admin
-const { pool } = require('../config/dbConfig');
+//const { pool } = require('../config/dbConfig');
 
-initializePassport(passport);  
+initializePassport(passport2);  
 
 admin.use(session({
   secret: 'secret',
@@ -17,8 +14,8 @@ admin.use(session({
   saveUninitialized: false
 }));
 
-admin.use(passport.initialize());
-admin.use(passport.session());
+admin.use(passport2.initialize());
+admin.use(passport2.session());
 
 admin.use(flash());
 
@@ -27,13 +24,13 @@ admin.get('/', function(req, res) {
     res.json({message: `You are in the admin route. Append '/login' to the URL to login as admin`})
 })
 
-// admin.get('/login', checkAuthenticated, function(req, res) {
-//     res.render('admin/adminLogin')
-// })
+ admin.get('/login', checkAuthenticated, function(req, res) {
+     res.render('admin/adminLogin')
+ })
 
-admin.get('/dashboard', checkNotAuthenticated, function(req, res) {
-    res.render('admin/adminDashboard')
-})
+//admin.get('/dashboard', checkNotAuthenticated, function(req, res) {
+  //  res.render('admin/adminDashboard')
+//})
 
 admin.get('/logout', function(req, res) {
   req.logOut();
@@ -41,13 +38,13 @@ admin.get('/logout', function(req, res) {
   res.redirect('/admin/login');
 }) 
 
-// admin.post('/login', passport.authenticate('local', 
-// {
-//   successRedirect: '/admin/dashboard',
-//   failureRedirect: '/admin/login',
-//   failureFlash: true
-// })
-// );
+//  admin.post('/login', passport2.authenticate('local', 
+//  {
+//    successRedirect: '/admin/dashboard',
+//    failureRedirect: '/admin/login',
+//    failureFlash: true
+//  })
+//  );
 
 ///////////////////////////////////////
 // admin.post('/login', function (req, res) {
