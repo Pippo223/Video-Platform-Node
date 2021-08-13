@@ -46,21 +46,6 @@ admin.get('/logout', function(req, res) {
 //  })
 //  );
 
-///////////////////////////////////////
-// admin.post('/login', function (req, res) {
-//   let email = req.body.adEmail
-//   let pwd = req.body.pwd
-//   console.log({email, pwd})
-// pool.query(`SELECT * FROM users WHERE email = $1`, [email], (err, results) => {
-//   if (err) {
-//     throw err
-//   }
-// if(results.rows[0].password === pwd){
-//   console.log(result.rows[0])
-// }
-// })
-
-// })
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
