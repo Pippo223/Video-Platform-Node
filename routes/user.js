@@ -1,0 +1,140 @@
+const express = require('express');
+const user = express.Router();
+
+const { pool } = require('../config/dbConfig'); //called to query the database
+const bcrypt = require('bcrypt'); //called to hash/encrypt password
+const session = require('express-session');//called to create session for user 
+const flash = require('express-flash');
+const passport = require('passport');
+const initializePassport = require('../config/PassportConfig');
+
+initializePassport(passport);
+
+user.use(express.urlencoded({extended: false}));
+user.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}));
+
+user.use(passport.initialize());
+user.use(passport.session());
+
+user.use(flash());
+
+user.get("/", function (req, res) {
+    res.render("index");
+  });
+  
+  user.get("/signup", checkAuthenticated, function (req, res) {
+    res.render("users/signup");
+  });
+  
+  user.get("/login", checkAuthenticated, function (req, res) {
+    res.render("users/login");
+  });
+  
+  user.get('/dashboard', checkNotAuthenticated, function (req, res) {
+    res.render('users/dashboard', { user: req.user.fname });
+  });
+  
+  user.get('/logout', function(req, res) {
+    req.logOut();
+    req.flash('success_msg', 'You are logged out');
+    res.redirect('/users/login');
+  }) 
+
+//USER SIGNUP
+  user.post("/signup", async function (req, res) {
+    let { fname, lname, email, pwd, pwd2 } = req.body;
+  
+    console.log({fname, lname, email, pwd, pwd2});
+  
+    let errors = [];
+  
+    if(!fname || !lname || !email || !pwd || !pwd2) {
+      errors.push({message: "Please enter all fields"})
+    }
+    if(pwd.length < 4) {
+      errors.push({message: "Password length should be at least 4 characters"});
+    }
+  if(pwd != pwd2) {
+    errors.push({message: "Passwords do not match"});
+  }
+  if(errors.length > 0) {
+    res.render('users/signup', { errors })
+  }
+
+  else {
+    //validation passed
+    let hashedPassword = await bcrypt.hash(pwd, 10);
+    console.log(hashedPassword);
+  
+  pool.query(
+    `SELECT * FROM users WHERE email = $1`, [email], (err, results)  => {
+     if(err) {
+       throw err;
+     }
+  
+    if (results.rows.length > 0) {
+        errors.push({message: 'Email already registered'});
+        res.render('users/signup', { errors });
+    } else {
+      pool.query(
+        `INSERT INTO users (fname, lname, email, password) 
+        VALUES ($1, $2, $3, $4) RETURNING id, fname, password`, 
+        [fname, lname, email, hashedPassword], (err, results) => {
+          if(err) {
+            throw err;
+          }
+          console.log(results.rows);
+          req.flash('success_msg', 'Sign up successful, please login ');
+          res.redirect('/users/login');
+        }
+      )
+    }
+  })
+  
+  
+        }
+  });
+
+//User Login
+  user.post('/login', passport.authenticate('local'), async (req, res) => {
+ 
+  const {email} = req.body
+  
+  let data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
+  try {
+    if(data.rows[0].role === null || data.rows[0].role === 'admin')
+    {
+      return res.redirect('dashboard')
+    }
+      else {
+       
+      }
+  
+  }
+  catch (err) {
+    console.log(err)
+  }
+
+})
+
+
+
+  function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return res.redirect("/users/dashboard");
+    }
+    next();
+  }
+  
+  function checkNotAuthenticated(req, res, next) {
+      if (req.isAuthenticated()) {
+        return next();
+      }
+      res.redirect("/users/login");
+    }
+
+  module.exports = user;

@@ -1,9 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const { pool } = require('./dbConfig');
 const bcrypt = require('bcrypt');
-const express = require('express');
-//const admin = express.Router();
-//const passport = require('passport');
 
 
 function initialize(passport) {
@@ -14,8 +11,6 @@ function initialize(passport) {
                 if(err) {
                     throw err;
                 }
-                console.log(results.rows[0].role);
-
                 if(results.rows.length > 0) {
                     const user = results.rows[0];
 
