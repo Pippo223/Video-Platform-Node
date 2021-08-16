@@ -11,11 +11,14 @@ const flash = require('express-flash');
 const passport = require('passport');
 const initializePassport = require('./config/PassportConfig');
 //const initializePassportAdmin = require('./config/PassportConfig');
-
+const path = require('path')
 
 app.use(express.urlencoded({extended: false}));
 //ejs middleware
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public/uploads/'))
+app.use(express.static(__dirname + '/public/'))
+
 
 const user = require('./routes/user');
 const adminRoute = require('./routes/admin'); //the admin route 

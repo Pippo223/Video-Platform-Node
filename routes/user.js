@@ -8,6 +8,8 @@ const flash = require('express-flash');
 const passport = require('passport');
 const initializePassport = require('../config/PassportConfig');
 
+//user.use(express.static(__dirname + '/public/'))
+
 initializePassport(passport);
 
 user.use(express.urlencoded({extended: false}));
@@ -34,10 +36,29 @@ user.get("/", function (req, res) {
     res.render("users/login");
   });
   
-  user.get('/dashboard', checkNotAuthenticated, function (req, res) {
-    res.render('users/dashboard', { user: req.user.fname });
+  user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
+    
+    let id = 2
+     try{
+     let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [id])
+     data = data.rows
+     res.render('users/dashboard', { files: data, user: req.user.fname } );
+     
+     console.log(data)
+
+     }
+
+     catch(err) {
+       console.log(err)
+     }
+    
+    
   });
-  
+
+user.post('/dashboard', )
+
+
+
   user.get('/logout', function(req, res) {
     req.logOut();
     req.flash('success_msg', 'You are logged out');
@@ -110,9 +131,7 @@ user.get("/", function (req, res) {
     {
       return res.redirect('dashboard')
     }
-      else {
-       
-      }
+      
   
   }
   catch (err) {

@@ -5,21 +5,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
-    <title>Login Page</title>
+    <title>Admin Dashboard</title>
 </head>
+
+
 <body>
     
     <a href="/admin/logout">Logout</a>
     <h1>Hello Admin </h1>
 
-    <form action="/admin/dashboard" method="POST">
+    
+    
+    <form action="/admin/dashboard" method="POST" enctype="multipart/form-data">
     <h2>UPLOAD VIDEO FILES</h2>
     <div class="file">
         <input type="file" name="myFile" id="myFile">
-
-        <input type="submit" >
     </div>
+    <div class="file">
+        <input type="text" name="title" id="title" placeholder="Video Title">
+    </div>
+    <div class="file">
+        <textarea name="desc" id="desc" placeholder="Description"></textarea>
+    </div>
+    <div>
+        <input type="submit" value="Upload" >
+    </div>
+
 </form>
+    <div class = "admin">
+        <ul>
+            <% files.forEach(item => { %>
+                <hr>
+            <li><%= item.id %></li>
+            <li><%= item.title %></li>
+            <li><%= item.description %></li>
+            <li>
+                  <video width="450" controls autoplay>
+                     <source type = "video/mp4" src = <%= item.filename %>  >
+                </video>
+            </li>
+            <% }) %> 
+          </ul>
+         
+    
+
+    </div>
+
+
+
+</main>
 
 </body>
+ <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"> -->
+    
+
+</script>
 </html>

@@ -5,26 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <a href="/users/logout">Logout</a>
     <h1>Hello <%= user.charAt(0).toUpperCase() + user.slice(1)  %></h1>
     <div class="logo-div">
-        <img src="../assets/logo1.png" alt="video-viewer-logo">
+        <img src="/logo1.png" alt="video-viewer-logo">
     </div>
     <div class="head-div">
-        TOP 3 MUSIC VIDEOS OF THE WEEK
+        TOP MUSIC VIDEOS OF THE WEEK
     </div>
-<div class="vid-num">
-    1
-</div>
-
 
 <div class="video-div">
-    <button>Previous</button>
-    <video id="videoPlayer" width="750" controls autoplay>
-            <source src="/video" type="video/mp4" />
+    <ul>
+  <li> <%= files[0].title %> </li>
+  <li> <%= files[0].description %> </li>
+   <li> <video id="videoPlayer" name="vid" width="750" controls autoplay>
+            <source type="video/mp4" src=<%=files[0].filename %> />
     </video>
+</li>
+</ul>
+    <button>Previous</button>
     <button>Next</button>
 </div>
     
