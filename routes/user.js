@@ -47,15 +47,18 @@ user.get("/", function (req, res) {
      try{
         let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
         data = data.rows;
+        let count = await pool.query(`SELECT * FROM videos`)
+        count = count.rows
         
-        res.render('users/dashboard', { user: name, files: data } );
+        res.render('users/dashboard', { user: name, files: data, count: count, counter: counter } );
+
+        console.log(counter + count )
       }
 
      catch(err) {
        console.log(err)
      }
-    
-
+  
   })
   
   user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
@@ -64,9 +67,10 @@ user.get("/", function (req, res) {
      try{
      let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
      data = data.rows
-     
-     res.render('users/dashboard', { user: name, files: data } );
-     
+     let count = await pool.query(`SELECT * FROM videos`)
+     count = count.rows
+     res.render('users/dashboard', { user: name, files: data, count: count, counter: counter  } );
+     console.log(counter +" "+ count.length )
      }
 
      catch(err) {

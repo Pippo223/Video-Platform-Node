@@ -35,13 +35,16 @@
 </li>  <% } %>
 
 </ul>
-<% if (files.length > 0) { %>
+
     <button id="prev">Previous</button>
+    
+    <% if (counter < count.length) { %>
     <button id="next">Next</button>
     <% } %>
- <% if (files.length === 0) { %>
-    <div class="no-vid"><i>No videos uploaded. Contact the administrator </i></div>
-    <% } %>
+    
+ <!-- <% if (files.length === 0) { %> -->
+    <!-- <div class="no-vid"><i>No videos uploaded. Contact the administrator </i></div> -->
+    <!-- <% } %> -->
     
 </div>
     
