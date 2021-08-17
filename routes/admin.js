@@ -119,7 +119,7 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
     const { title, desc } = req.body
 
     const data = await pool.query(`INSERT INTO videos (filename, title, description) VALUES ($1, $2, $3)
-    RETURNING *`, [fileName, title, desc ])
+    RETURNING *`, [fileName.replace('public\\uploads\\', '/uploads/'), title, desc])
     
     console.log(data.rows)
     
@@ -132,9 +132,6 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
       status: 'Fail',
       err })
   }
-  
- 
-  //res.send('success')
  
   })
  

@@ -29,8 +29,9 @@
     <ul>
   <li>  <%= files[0].title %> </li>
   <li> <%= files[0].description %> </li>
-   <li> <video id="videoPlayer" name="vid" width="750" controls autoplay>
-            <source type="video/mp4" src=<%=files[0].filename %> />
+   <li> <video controls id="videoPlayer" name="vid" width="750"  autoplay>
+            <!-- <source type="video/mp4" src="<%=files[0].filename %>" /> -->
+            <source type="video/mp4" src="/uploads/myFile-1629121759450.mp4" />
     </video>
 </li>
 </ul>
