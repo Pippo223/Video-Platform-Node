@@ -115,15 +115,34 @@ admin.get('/logout', function(req, res) {
 admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
   
   try{
-    const fileName = req.file.path
+    const filePath = req.file.path
     const { title, desc } = req.body
 
-    const data = await pool.query(`INSERT INTO videos (filename, title, description) VALUES ($1, $2, $3)
-    RETURNING *`, [fileName.replace('public\\uploads\\', '/uploads/'), title, desc])
-    
-    console.log(data.rows)
-    
+    pool.query(`SELECT * FROM videos WHERE title = $1`, [title], 
+    (err, results) => {
+      if(err) {
+        throw err
+      }
+      if(results.rows.length > 0) {
+        return res.json({message: 'A file with the same title already exists in database'})
+      }
+
+      else {
+        const data = pool.query(`INSERT INTO videos (title, description, filepath) VALUES ($1, $2, $3)
+    RETURNING *`, [ title, desc, filePath.replace('public\\uploads\\', '/uploads/') ],
+    (err, results) => {
+      if(err) {
+        return res.json({status: 'Fail', message: err.message })
+      }
+      //console.log(data.rows)
     return res.json({status: 'Success', message: 'File details sent to database'})
+    })
+
+    
+      }
+
+    }) 
+
   }
 
   catch(err) {

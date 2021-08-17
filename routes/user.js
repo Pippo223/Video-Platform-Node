@@ -24,6 +24,8 @@ user.use(passport.session());
 
 user.use(flash());
 
+let name = '';
+
 user.get("/", function (req, res) {
     res.render("index");
   });
@@ -35,17 +37,36 @@ user.get("/", function (req, res) {
   user.get("/login", checkAuthenticated, function (req, res) {
     res.render("users/login");
   });
+
+  let counter = 1;
+
+  user.post('/mansion', async(req,res)=>{
+    console.log('--> ',req.body.data)
+    counter++;    
+    console.log(counter)
+     try{
+        let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
+        data = data.rows;
+        
+        res.render('users/dashboard', { user: name, files: data } );
+      }
+
+     catch(err) {
+       console.log(err)
+     }
+    
+
+  })
   
   user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
-    
-    let id = 2
+    name = req.user.fname;
+    console.log(req.params)
      try{
-     let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [id])
+     let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
      data = data.rows
-     res.render('users/dashboard', { files: data, user: req.user.fname } );
      
-     console.log(data)
-
+     res.render('users/dashboard', { user: name, files: data } );
+     
      }
 
      catch(err) {

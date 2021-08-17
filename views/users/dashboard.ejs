@@ -11,33 +11,56 @@
     <a href="/users/logout">Logout</a>
     
 <div class="head1">
-    <h1>Hello <%= user.charAt(0).toUpperCase() + user.slice(1)  %></h1>
+    <h1 class="hello-login">Hello <%= user.charAt(0).toUpperCase() + user.slice(1)  %></h1>
     <div class="logo-div">
         
-        <img src="/logo1.png" alt="video-viewer-logo">
+        <img src="/logos/logo1.png" alt="video-viewer-logo">
         <div class="head-div">
-        TOP MUSIC VIDEOS OF THE WEEK
+        MOST WATCHED VIDEOS OF THE WEEK
         </div>
        
     </div>
     
 </div>
 
-   
-
 <div class="video-div">
     <ul>
+        <% if (files.length > 0) { %>
   <li>  <%= files[0].title %> </li>
   <li> <%= files[0].description %> </li>
-   <li> <video controls id="videoPlayer" name="vid" width="750"  autoplay>
-            <!-- <source type="video/mp4" src="<%=files[0].filename %>" /> -->
-            <source type="video/mp4" src="/uploads/myFile-1629121759450.mp4" />
+   <li> <video controls id="videoPlayer" name="vid" width="750"  >
+            <source type="video/mp4" src=<%= files[0].filepath %> /> 
+            <!-- <source type="video/mp4" src="/uploads/myFile-1629121759450.mp4" /> -->
     </video>
-</li>
+</li>  <% } %>
+
 </ul>
+<% if (files.length > 0) { %>
     <button id="prev">Previous</button>
     <button id="next">Next</button>
+    <% } %>
+ <% if (files.length === 0) { %>
+    <div class="no-vid"><i>No videos uploaded. Contact the administrator </i></div>
+    <% } %>
+    
 </div>
     
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        let counter = 1;
+        const nextbtn = document.querySelector('#next');
+        function getNextVideo(){
+            counter++;
+            let url = 'http://localhost:3000/users/mansion';
+            let data = {data:counter}
+            $.post(url,data,(data,status)=>{
+                console.log(status,data)
+            })
+            location.reload()
+        }
+        nextbtn.addEventListener('click', getNextVideo)
+        
+    </script>
+  
 </body>
 </html>
