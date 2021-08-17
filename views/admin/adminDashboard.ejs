@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Admin Dashboard</title>
 </head>
 
@@ -12,12 +13,13 @@
 <body>
     
     <a href="/admin/logout">Logout</a>
-    <h1>Hello Admin </h1>
+    <h3>Admin Dashboard </h3>
 
     
+    <h3 class="head-div">Upload Video Files</h3>
     
     <form action="/admin/dashboard" method="POST" enctype="multipart/form-data">
-    <h2>UPLOAD VIDEO FILES</h2>
+    
     <div class="file">
         <input type="file" name="myFile" id="myFile">
     </div>
@@ -33,8 +35,10 @@
 
 </form>
     <div class = "admin">
-        <ul>
+        
             <% files.forEach(item => { %>
+    <div>
+        <ul>
                 <hr>
             <li><%= item.id %></li>
             <li><%= item.title %></li>
@@ -44,8 +48,10 @@
                      <source type = "video/mp4" src = <%= item.filename %>  >
                 </video>
             </li>
+        </ul>    
+    </div>
             <% }) %> 
-          </ul>
+          
          
     
 

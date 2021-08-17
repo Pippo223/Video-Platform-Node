@@ -5,12 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Admin Login</title>
 </head>
 <body>
+
     
-    <form action="/admin/login" method="POST">
-    <h2>ADMIN LOGIN</h2>
+    <form action="/admin/login" method="POST" class="forms" id="admin">
+        <h2 class="head-div">ADMIN LOGIN</h2>
+   
      <ul>
         <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
         <li><%= error.message %></li>

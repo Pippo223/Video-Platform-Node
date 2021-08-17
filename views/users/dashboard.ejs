@@ -9,25 +9,33 @@
 </head>
 <body>
     <a href="/users/logout">Logout</a>
+    
+<div class="head1">
     <h1>Hello <%= user.charAt(0).toUpperCase() + user.slice(1)  %></h1>
     <div class="logo-div">
+        
         <img src="/logo1.png" alt="video-viewer-logo">
-    </div>
-    <div class="head-div">
+        <div class="head-div">
         TOP MUSIC VIDEOS OF THE WEEK
+        </div>
+       
     </div>
+    
+</div>
+
+   
 
 <div class="video-div">
     <ul>
-  <li> <%= files[0].title %> </li>
+  <li>  <%= files[0].title %> </li>
   <li> <%= files[0].description %> </li>
    <li> <video id="videoPlayer" name="vid" width="750" controls autoplay>
             <source type="video/mp4" src=<%=files[0].filename %> />
     </video>
 </li>
 </ul>
-    <button>Previous</button>
-    <button>Next</button>
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
 </div>
     
 </body>

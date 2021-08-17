@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-    <form action="/users/signup" method="POST">
-    <h2>SIGNUP</h2>
+    <form action="/users/signup" method="POST" class="forms" id="usu">
+    <h2 class="head-div">SIGNUP</h2>
     <ul>
         <% if(typeof errors != 'undefined') { %>
             <% errors.forEach(error => { %>

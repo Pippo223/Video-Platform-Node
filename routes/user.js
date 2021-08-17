@@ -38,7 +38,7 @@ user.get("/", function (req, res) {
   
   user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
     
-    let id = 2
+    let id = 4
      try{
      let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [id])
      data = data.rows
