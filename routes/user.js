@@ -4,9 +4,10 @@ const user = express.Router();
 const { pool } = require('../config/dbConfig'); //called to query the database
 const bcrypt = require('bcrypt'); //called to hash/encrypt password
 const session = require('express-session');//called to create session for user 
-const flash = require('express-flash');
-const passport = require('passport');
-const initializePassport = require('../config/PassportConfig');
+const flash = require('express-flash'); //called to flash error or success messages
+const passport = require('passport'); //For authentication of credentials
+const initializePassport = require('../config/PassportConfig'); //the passport configuration file
+require("dotenv").config(); //use a an environment variiable (from the '.env' file)
 
 //user.use(express.static(__dirname + '/public/'))
 
@@ -14,7 +15,7 @@ initializePassport(passport);
 
 user.use(express.urlencoded({extended: false}));
 user.use(session({
-  secret: 'secret',
+  secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: false
 }));
@@ -37,29 +38,6 @@ user.get("/", function (req, res) {
   user.get("/login", checkAuthenticated, function (req, res) {
     res.render("users/login");
   });
-
-  let counter = 1;
-
-  user.post('/mansion', async(req,res)=>{
-    console.log('--> ',req.body.data)
-    counter++;    
-    console.log(counter)
-     try{
-        let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
-        data = data.rows;
-        let count = await pool.query(`SELECT * FROM videos`)
-        count = count.rows
-        
-        res.render('users/dashboard', { user: name, files: data, count: count, counter: counter } );
-
-        console.log(counter + count )
-      }
-
-     catch(err) {
-       console.log(err)
-     }
-  
-  })
   
   user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
     name = req.user.fname;
@@ -70,19 +48,50 @@ user.get("/", function (req, res) {
      let count = await pool.query(`SELECT * FROM videos`)
      count = count.rows
      res.render('users/dashboard', { user: name, files: data, count: count, counter: counter  } );
-     console.log(counter +" "+ count.length )
      }
 
      catch(err) {
        console.log(err)
      }
-    
-    
   });
 
-user.post('/dashboard', )
+  let counter = 1;
 
+  user.post('/increment', async(req,res)=>{
+    counter++;    
+    console.log(counter)
+     try{
+        let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
+        data = data.rows;
+        let count = await pool.query(`SELECT * FROM videos`)
+        count = count.rows
+        
+        res.render('users/dashboard', { user: name, files: data, count: count, counter: counter } );
+      }
 
+     catch(err) {
+       console.log(err)
+     }
+  
+  })
+
+  user.post('/decrement', async(req,res)=>{
+    counter--
+    console.log("prev"+counter)
+    try{
+      let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
+        data = data.rows;
+        let count = await pool.query(`SELECT * FROM videos`)
+        count = count.rows
+        
+        res.render('users/dashboard', { user: name, files: data, count: count, counter: counter } );
+    }
+
+    catch(err) {
+      console.log(err)
+    }
+
+  })
 
   user.get('/logout', function(req, res) {
     req.logOut();

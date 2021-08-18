@@ -30,38 +30,66 @@
   <li> <%= files[0].description %> </li>
    <li> <video controls id="videoPlayer" name="vid" width="750"  >
             <source type="video/mp4" src=<%= files[0].filepath %> /> 
-            <!-- <source type="video/mp4" src="/uploads/myFile-1629121759450.mp4" /> -->
     </video>
 </li>  <% } %>
 
 </ul>
+<div class="buttons">
+   <button id="prev">Previous</button>
+    <button id="next">Next</button>   
+</div>
 
-    <button id="prev">Previous</button>
-    
-    <% if (counter < count.length) { %>
-    <button id="next">Next</button>
-    <% } %>
-    
- <!-- <% if (files.length === 0) { %> -->
-    <!-- <div class="no-vid"><i>No videos uploaded. Contact the administrator </i></div> -->
-    <!-- <% } %> -->
-    
+    <p id="counter"><%= counter %></p>
+    <p id="count"><%= count.length %></p>
 </div>
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        let counter = 1;
+        
         const nextbtn = document.querySelector('#next');
+        const prevbtn = document.querySelector('#prev');
+
+        let counter = +document.querySelector('#counter').textContent;
+        const dbcount = +document.querySelector('#count').textContent;
+
+        // console.log('counter: '+ counter + " "+ typeof counter)
+        // console.log('dbcount '+ dbcount + " " + typeof dbcount)
+
+        if(counter >= dbcount)
+        {
+            nextbtn.style.display = 'none'
+        }
+
+        if(counter <= 1)
+        {
+            prevbtn.style.display = 'none'
+        }
+
+        nextbtn.addEventListener('click', getNextVideo)
+        prevbtn.addEventListener('click', getPreviousVideo)
+
         function getNextVideo(){
             counter++;
-            let url = 'http://localhost:3000/users/mansion';
-            let data = {data:counter}
-            $.post(url,data,(data,status)=>{
-                console.log(status,data)
+            let url = 'http://localhost:3000/users/increment';
+            let data = {data: counter}
+            $.post(url, data, (data, status) => {
+
             })
             location.reload()
         }
-        nextbtn.addEventListener('click', getNextVideo)
+        
+        
+        function getPreviousVideo() {
+            counter--;
+            let url = 'http://localhost:3000/users/decrement';
+            let data = {data: counter}
+            $.post(url, data, (data, status) => {
+                
+            })
+    
+            location.reload()   
+        }
+       
         
     </script>
   

@@ -77,12 +77,19 @@ li:first-child {
 }
 
 button[id=prev] {
-    border-radius: 2px;
+    border-radius: 5px;
+    margin-bottom: 10%;
+    border: 1px solid orange;
+    position: absolute;
+    left: 20%;
 }
 
 button[id=next] {
-    margin-left: 75%;
-    border-radius: 2px;
+    border-radius: 5px;
+    margin-bottom: 10%;
+    border: 1px solid orange;
+    position: absolute;
+    left: 80%;
 }
 
 button:hover {
@@ -162,4 +169,12 @@ a:hover {
 
 .main {
     background-image: url("/logos/bubbles.jpg");
+}
+
+.buttons {
+    position: relative;
+}
+
+#count, #counter {
+    visibility: hidden;
 }

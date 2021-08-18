@@ -61,23 +61,17 @@ admin.get('/', function(req, res) {
  })
 
 admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
-  //let datas = []
+  
   try{ 
     let data = await pool.query(`SELECT * FROM videos`)
     console.log(data.rows)
-    // for (let i=0; i<data.rows.length;i++) {
-    //   datas.push(data.rows[i])
-    // }
+
     data = data.rows
    
-   // res.sendFile(__dirname + '/admin')
     res.render('admin/adminDashboard', { files: data  })
   }
   catch(err) {
-    // res.json({
-    //   status: 'Error',
-    //   err
-    // })
+  
     console.log(err.message)
   }
  })
@@ -154,9 +148,6 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
  
   })
  
-
-
-
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
