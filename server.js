@@ -4,7 +4,11 @@ const session = require('express-session');//called to create session for user
 //const flash = require('express-flash');//called to flash error or success messages
 const passport = require('passport');
 const initializePassport = require('./config/PassportConfig');
+const pgSession = require('connect-pg-simple')(session);
 require("dotenv").config(); //use a an environment variiable (from the '.env' file)
+const { pool } = require('./config/dbConfig');
+
+
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.DB_HOST || '0.0.0.0';
 
@@ -20,6 +24,7 @@ app.use(express.static(__dirname + '/public/'))
 const user = require('./routes/user');//calling the user
 const adminRoute = require('./routes/admin'); //calling the admin route 
 const apiRoute = require('./routes/api'); //calling the api route 
+const { pool } = require('./config/dbConfig');
 
 //Setup the various routes
 app.use('/users', user)
@@ -30,13 +35,17 @@ initializePassport(passport);
 
 //create sessions for users
 app.set('trust proxy', 1)//unleaks memory
+
 app.use(session({
   cookie:{
     secure:true,
     maxAge:60000
   },
   secret: process.env.SESSION_SECRET,
-  store: new (require('connect-pg-simple')(session))(),
+  store: new pgSession({
+    pool: pool,
+    tableName: 'sessions'
+  }),
   resave: false,
   saveUninitialized: true
 })); 

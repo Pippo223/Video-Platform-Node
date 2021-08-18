@@ -47,7 +47,10 @@ admin.use(session({
     maxAge:60000
   },
   secret: process.env.SESSION_SECRET,
-  store: new (require('connect-pg-simple')(session))(),
+  store: new pgSession({
+    pool: pool,
+    tableName: 'user_sessions'
+  }),
   resave: false,
   saveUninitialized: true
 })); 
