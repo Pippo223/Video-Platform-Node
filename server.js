@@ -1,12 +1,12 @@
 const express = require('express'); //use express library
 const app = express(); //instance of express
-const PORT = process.env.port || 3000;
 const session = require('express-session');//called to create session for user 
 //const flash = require('express-flash');//called to flash error or success messages
 const passport = require('passport');
 const initializePassport = require('./config/PassportConfig');
 require("dotenv").config(); //use a an environment variiable (from the '.env' file)
-
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.DB_HOST || '0.0.0.0';
 
 app.use(express.urlencoded({extended: true}));//use qs library(querystring with added security) to parse data
 
@@ -43,6 +43,6 @@ app.use(passport.session());
 
 //app.use(flash());
 
-app.listen(PORT, function () {
+app.listen(PORT, HOST, function () {
   console.log(`Listening on port ${PORT}`);
 });
