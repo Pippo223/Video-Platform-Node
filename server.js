@@ -36,7 +36,6 @@ app.use(session({
     maxAge:60000
   },
   store: new (require('connect-pg-simple')(session))(),
-  secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true
 })); 
