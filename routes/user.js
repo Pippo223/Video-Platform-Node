@@ -23,7 +23,6 @@ user.use(session({
     maxAge:60000
   },
   store: new (require('connect-pg-simple')(session))(),
-  secret: 'secret',
   resave: false,
   saveUninitialized: true
 })); 
