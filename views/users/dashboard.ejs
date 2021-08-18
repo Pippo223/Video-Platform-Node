@@ -45,16 +45,12 @@
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        //Handle the behaviours of next and previous buttons
-
+    //Handle the behaviours of next and previous buttons
         const nextbtn = document.querySelector('#next');
         const prevbtn = document.querySelector('#prev');
 
         let counter = +document.querySelector('#counter').textContent;
         const dbcount = +document.querySelector('#count').textContent;
-
-        // console.log('counter: '+ counter + " "+ typeof counter)
-        // console.log('dbcount '+ dbcount + " " + typeof dbcount)
 
         if(counter >= dbcount)
         {
@@ -76,6 +72,7 @@
             $.post(url, data, (data, status) => {
 
             })
+
             location.reload()
         }
         
