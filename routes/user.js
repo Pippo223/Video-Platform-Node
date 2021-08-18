@@ -16,7 +16,7 @@ initializePassport(passport);
 user.use(express.urlencoded({extended: true}));
 
 //create sessions for users
-user.set('trust proxy', 1)//unleaks memory
+//user.set('trust proxy', 1)//unleaks memory
 user.use(session({
   cookie:{
     secure:true,

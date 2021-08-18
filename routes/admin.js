@@ -40,7 +40,7 @@ admin.use(express.static(__dirname+'/uploads'))
 
 
 //create sessions for users
-admin.set('trust proxy', 1)//unleaks memory
+//admin.set('trust proxy', 1)//unleaks memory
 admin.use(session({
   cookie:{
     secure:true,
