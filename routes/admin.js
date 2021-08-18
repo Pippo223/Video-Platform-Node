@@ -4,7 +4,6 @@ const session = require('express-session');//called to create session for admin
 const flash = require('express-flash');
 const passport = require('passport'); //for passport authentication
 const { pool } = require('../config/dbConfig');
-const path = require('path')
 
 const multer  = require('multer') //require multer library for file uploads
 
@@ -61,7 +60,7 @@ admin.get('/', function(req, res) {
  })
 
 admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
-  
+
   try{ 
     let data = await pool.query(`SELECT * FROM videos`)
     console.log(data.rows)
@@ -106,6 +105,7 @@ admin.get('/logout', function(req, res) {
   res.redirect('/admin/login');
 }) 
 
+//using multer to upload videos in the admin dashboard
 admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
   
   try{
@@ -128,7 +128,6 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
       if(err) {
         return res.json({status: 'Fail', message: err.message })
       }
-      //console.log(data.rows)
     return res.json({status: 'Success', message: 'File details sent to database'})
     })
 
@@ -148,7 +147,7 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
  
   })
  
-
+//route protection
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect("/admin/dashboard");

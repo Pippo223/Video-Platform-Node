@@ -1,6 +1,6 @@
-require("dotenv").config();
+require("dotenv").config();//require db details 
 
-const { Pool } = require('pg');
+const { Pool } = require('pg');// postgres library
 
 const isProduction = process.env.NODE_ENV === 'production'; 
 

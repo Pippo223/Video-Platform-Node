@@ -13,7 +13,8 @@ require("dotenv").config(); //use a an environment variiable (from the '.env' fi
 
 initializePassport(passport);
 
-user.use(express.urlencoded({extended: false}));
+user.use(express.urlencoded({extended: true}));
+
 user.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
@@ -25,20 +26,25 @@ user.use(passport.session());
 
 user.use(flash());
 
-let name = '';
+let name = ''; //A login name will be passed to it
+let counter = 1;//videos will start playing from the first 
 
+//get index page
 user.get("/", function (req, res) {
     res.render("index");
   });
   
+  //get signup page
   user.get("/signup", checkAuthenticated, function (req, res) {
     res.render("users/signup");
   });
   
+  //get login page
   user.get("/login", checkAuthenticated, function (req, res) {
     res.render("users/login");
   });
   
+  //get user dashboard
   user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
     name = req.user.fname;
     console.log(req.params)
@@ -55,8 +61,7 @@ user.get("/", function (req, res) {
      }
   });
 
-  let counter = 1;
-
+  //increment of counter value goes to this route to be used
   user.post('/increment', async(req,res)=>{
     counter++;    
     console.log(counter)
@@ -75,6 +80,7 @@ user.get("/", function (req, res) {
   
   })
 
+   //decrement of counter value goes to this route to be used
   user.post('/decrement', async(req,res)=>{
     counter--
     console.log("prev"+counter)
@@ -93,6 +99,7 @@ user.get("/", function (req, res) {
 
   })
 
+  // logout route
   user.get('/logout', function(req, res) {
     req.logOut();
     req.flash('success_msg', 'You are logged out');
@@ -175,7 +182,7 @@ user.get("/", function (req, res) {
 })
 
 
-
+//For route protection
   function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
       return res.redirect("/users/dashboard");
