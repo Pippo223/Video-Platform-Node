@@ -5,7 +5,7 @@ const session = require('express-session');//called to create session for user
 const passport = require('passport');
 const initializePassport = require('./config/PassportConfig');
 require("dotenv").config(); //use a an environment variiable (from the '.env' file)
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const HOST = process.env.DB_HOST || '0.0.0.0';
 
 app.use(express.urlencoded({extended: true}));//use qs library(querystring with added security) to parse data
