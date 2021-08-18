@@ -29,11 +29,24 @@ app.use('/api', apiRoute);
 initializePassport(passport);
 
 //create sessions for users
+app.set('trust proxy', 1)//unleaks memory
 app.use(session({
+  cookie:{
+    secure:true,
+    maxAge:60000
+  },
+  store: new (require('connect-pg-simple')(session))(),
   secret: process.env.SECRET_KEY,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
 })); 
+
+app.use(function(req,res,next){
+  if(!req.session){
+      return next(new Error('Oh no')) //handle error
+  }
+  next()
+})
 
 //use the passport middleware for authentication
 app.use(passport.initialize());

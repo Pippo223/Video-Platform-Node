@@ -39,11 +39,18 @@ admin.use(express.static(__dirname+'/public'))
 admin.use(express.static(__dirname+'/uploads'))
 
 
+//create sessions for users
+admin.set('trust proxy', 1)//unleaks memory
 admin.use(session({
-  secret: 'secret',
+  cookie:{
+    secure:true,
+    maxAge:60000
+  },
+  store: new (require('connect-pg-simple')(session))(),
+  secret: process.env.SECRET_KEY,
   resave: false,
-  saveUninitialized: false
-}));
+  saveUninitialized: true
+})); 
 
 admin.use(passport.initialize());
 admin.use(passport.session());

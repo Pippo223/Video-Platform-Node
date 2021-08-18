@@ -15,11 +15,18 @@ initializePassport(passport);
 
 user.use(express.urlencoded({extended: true}));
 
+//create sessions for users
+user.set('trust proxy', 1)//unleaks memory
 user.use(session({
+  cookie:{
+    secure:true,
+    maxAge:60000
+  },
+  store: new (require('connect-pg-simple')(session))(),
   secret: process.env.SECRET_KEY,
   resave: false,
-  saveUninitialized: false
-}));
+  saveUninitialized: true
+})); 
 
 user.use(passport.initialize());
 user.use(passport.session());
