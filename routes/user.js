@@ -22,6 +22,7 @@ user.use(session({
     secure:true,
     maxAge:60000
   },
+  secret: process.env.SESSION_SECRET,
   store: new (require('connect-pg-simple')(session))(),
   resave: false,
   saveUninitialized: true

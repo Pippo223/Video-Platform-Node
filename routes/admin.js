@@ -4,7 +4,7 @@ const session = require('express-session');//called to create session for admin
 const flash = require('express-flash');
 const passport = require('passport'); //for passport authentication
 const { pool } = require('../config/dbConfig');
-
+require('dotenv').config();
 const multer  = require('multer') //require multer library for file uploads
 
 //Multer configuration
@@ -46,6 +46,7 @@ admin.use(session({
     secure:true,
     maxAge:60000
   },
+  secret: process.env.SESSION_SECRET,
   store: new (require('connect-pg-simple')(session))(),
   resave: false,
   saveUninitialized: true
