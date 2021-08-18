@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -28,6 +29,18 @@
         <% if (files.length > 0) { %>
   <li>  <%= files[0].title %> </li>
   <li> <%= files[0].description %> </li>
+  <br>
+  <li> 
+
+      <input type="text" id="copy-link" value = "http://localhost:3000<%= files[0].filepath %>"> 
+
+    <button id="c-l-btn" >
+        Copy video link
+    </button> 
+    
+    <div id="myTooltip"> Copy to clipboard </div>
+</li>
+  <br>
    <li> <video controls id="videoPlayer" name="vid" width="750"  >
             <source type="video/mp4" src=<%= files[0].filepath %> /> 
     </video>
@@ -44,50 +57,7 @@
 </div>
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-    //Handle the behaviours of next and previous buttons
-        const nextbtn = document.querySelector('#next');
-        const prevbtn = document.querySelector('#prev');
-
-        let counter = +document.querySelector('#counter').textContent;
-        const dbcount = +document.querySelector('#count').textContent;
-
-        if(counter >= dbcount)
-        {
-            nextbtn.style.display = 'none'
-        }
-
-        if(counter <= 1)
-        {
-            prevbtn.style.display = 'none'
-        }
-
-        nextbtn.addEventListener('click', getNextVideo)
-        prevbtn.addEventListener('click', getPreviousVideo)
-
-        function getNextVideo(){
-            counter++;
-            let url = 'http://localhost:3000/users/increment';
-            let data = {data: counter}
-            $.post(url, data, (data, status) => {
-
-            })
-
-            location.reload()
-        }
-        
-        
-        function getPreviousVideo() {
-            counter--;
-            let url = 'http://localhost:3000/users/decrement';
-            let data = {data: counter}
-            $.post(url, data, (data, status) => {
-                
-            })
-    
-            location.reload()   
-        }
-       
+    <script src="/script/app.js">
         
     </script>
   

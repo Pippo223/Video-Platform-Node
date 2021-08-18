@@ -6,7 +6,6 @@
 .logo-div {
     width:50%;
     margin: auto;
-     /* border:1px solid red;     */
 } 
 
 img {
@@ -21,18 +20,9 @@ img {
     text-decoration: underline;
 }
 
-/* .vid-num {
-    width:50%;
-    margin: auto;
-    font-size: 60px;
-    font-weight: bolder;
-    text-align: center;
-} */
-
 .video-div {
     width:56%;
     margin-left: 25%; 
-    /* border: 1px solid greenyellow; */
 }
 
 button {
@@ -94,6 +84,7 @@ button[id=next] {
 
 button:hover {
     background-color: orange;
+    cursor: pointer;
 }
 
 .admin {
@@ -149,11 +140,6 @@ a:hover {
     margin-left: 21%;
 }
 
-/* .hello-login{
-    position:absolute;
-    margin-left: 6%;
-} */
-
 .no-vid {
     margin-top: 10%;
     margin-left: 25%; 
@@ -178,3 +164,36 @@ a:hover {
 #count, #counter {
     visibility: hidden;
 }
+
+#c-l-btn {
+    width: 8rem;
+    border-radius: 20px; 
+    border:1px solid orange;
+    font-size: 14px;
+}
+
+/*Copy to clipboard*/
+#myTooltip {
+    visibility: hidden; 
+    display: inline-block;
+    width: 10rem;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 30px;
+    padding: 5px;
+    opacity: 0.5;
+    transition: opacity 0.1s;
+    z-index: 1;
+    top: 21%;
+    left: 67%;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  #copy-link {
+      width: 10rem;
+  }

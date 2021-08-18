@@ -47,13 +47,14 @@ user.get("/", function (req, res) {
   //get user dashboard
   user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
     name = req.user.fname;
-    console.log(req.params)
+    
      try{
      let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
      data = data.rows
      let count = await pool.query(`SELECT * FROM videos`)
      count = count.rows
      res.render('users/dashboard', { user: name, files: data, count: count, counter: counter  } );
+      
      }
 
      catch(err) {
@@ -162,7 +163,8 @@ user.get("/", function (req, res) {
   });
 
 //User Login
-  user.post('/login', passport.authenticate('local'), async (req, res) => {
+  user.post('/login', passport.authenticate('local', {failureRedirect: '/users/login', failureFlash: true}), 
+  async (req, res) => {
  
   const {email} = req.body
   
