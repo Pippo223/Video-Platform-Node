@@ -204,15 +204,14 @@ user.get("/", function (req, res) {
     if (req.isAuthenticated()) {
       return res.redirect('/dashboard');
     }
-
-    //next();
+   res.redirect('login')
   }
   
   function checkNotAuthenticated(req, res, next) {
       if (req.isAuthenticated()) {
        return next()
       }
-      res.redirect('/login');
+      res.redirect('login');
   }
 
   module.exports = user;
