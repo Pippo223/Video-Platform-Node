@@ -2,7 +2,11 @@
   "name": "video-platform-node",
   "version": "1.0.0",
   "description": "Capstone project",
-  "main": "server.js",
+  "main": "app.js",
+  "engines": {
+    "node": "14.16.1",
+    "npm": "7.20.3"
+  },
   "scripts": {
     "start": "node app.js",
     "build": "gatsby build",
