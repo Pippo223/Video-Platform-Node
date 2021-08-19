@@ -2,9 +2,14 @@
   "name": "video-platform-node",
   "version": "1.0.0",
   "description": "capstone project",
+  "engines": {
+    "node": "14.16.1",
+    "npm": "7.20.3"
+    },
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "run start server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Philip O. Asare",
