@@ -46,17 +46,17 @@ user.get("/", function (req, res) {
   });
   
   //get signup page
-  user.get("/users/signup", checkAuthenticated, function (req, res) {
+  user.get("/signup", checkAuthenticated, function (req, res) {
     res.render("users/signup");
   });
   
   //get login page
-  user.get("/users/login", checkNotAuthenticated, function (req, res) {
+  user.get("/login", checkAuthenticated, function (req, res) {
     res.render("users/login");
   });
   
   //get user dashboard
-  user.get('/users/dashboard', checkAuthenticated, async function (req, res) {
+  user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
     
     console.log(name)
     
@@ -113,14 +113,14 @@ user.get("/", function (req, res) {
   })
 
   // logout route
-  user.get('/users/logout', function(req, res) {
+  user.get('/logout', function(req, res) {
     req.logOut();
     req.flash('success_msg', 'You are logged out');
-    res.redirect('/users/login');
+    res.redirect('login');
   }) 
 
 //USER SIGNUP
-  user.post("/users/signup", async function (req, res) {
+  user.post("/signup", async function (req, res) {
     let { fname, lname, email, pwd, pwd2 } = req.body;
   
     console.log({fname, lname, email, pwd, pwd2});
@@ -164,7 +164,7 @@ user.get("/", function (req, res) {
           }
           console.log(results.rows);
           req.flash('success_msg', 'Sign up successful, please login ');
-          res.redirect('/users/login');
+          res.redirect('login');
         }
       )
     }
@@ -175,7 +175,7 @@ user.get("/", function (req, res) {
   });
 
 //User Login
-  user.post('/users/login', passport.authenticate('local', {failureRedirect: '/users/login', failureFlash: true}), 
+  user.post('/login', passport.authenticate('local', {failureRedirect: 'login', failureFlash: true}), 
   async (req, res) => {
  
   const {email} = req.body
@@ -186,7 +186,7 @@ user.get("/", function (req, res) {
     {
       console.log(data.rows)
       name = data.rows[0].fname
-      return res.redirect('/users/dashboard')
+      return res.redirect('dashboard')
     }
       
   
@@ -201,7 +201,7 @@ user.get("/", function (req, res) {
 //For route protection
   function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-      return res.redirect("/users/dashboard");
+      return res.redirect('dashboard');
     }
     next();
   }
@@ -210,7 +210,7 @@ user.get("/", function (req, res) {
       if (req.isAuthenticated()) {
         return next();
       }
-      res.redirect("/users/login");
+      res.redirect('login');
     }
 
   module.exports = user;
