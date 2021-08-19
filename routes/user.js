@@ -23,10 +23,7 @@ user.use(express.urlencoded({extended: true}));
     maxAge:60000
    },
   secret: process.env.SESSION_SECRET,
-  store: new pgSession({
-    pool: pool,
-    tableName: 'sessions'
-  }),
+  store: new (require('connect-pg-simple')(session))(),
   resave: false,
   saveUninitialized: true
 })); 
