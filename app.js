@@ -30,8 +30,11 @@ const adminRoute = require('./routes/admin'); //calling the admin route
 const apiRoute = require('./routes/api'); //calling the api route 
 //const { pool } = require('./config/dbConfig');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 //Setup the various routes
-app.use('/users', user)
+app.use('/', user)
+//app.use('/users', user)
 app.use('/admin', adminRoute);
 app.use('/api', apiRoute);
 

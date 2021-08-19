@@ -46,17 +46,17 @@ user.get("/", function (req, res) {
   });
   
   //get signup page
-  user.get("/signup", checkAuthenticated, function (req, res) {
+  user.get("/users/signup", checkAuthenticated, function (req, res) {
     res.render("users/signup");
   });
   
   //get login page
-  user.get("/login", checkAuthenticated, function (req, res) {
+  user.get("/users/login", checkAuthenticated, function (req, res) {
     res.render("users/login");
   });
   
   //get user dashboard
-  user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
+  user.get('/users/dashboard', checkNotAuthenticated, async function (req, res) {
     name = req.user.fname;
     
      try{
@@ -112,14 +112,14 @@ user.get("/", function (req, res) {
   })
 
   // logout route
-  user.get('/logout', function(req, res) {
+  user.get('/users/logout', function(req, res) {
     req.logOut();
     req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
   }) 
 
 //USER SIGNUP
-  user.post("/signup", async function (req, res) {
+  user.post("/users/signup", async function (req, res) {
     let { fname, lname, email, pwd, pwd2 } = req.body;
   
     console.log({fname, lname, email, pwd, pwd2});
@@ -174,7 +174,7 @@ user.get("/", function (req, res) {
   });
 
 //User Login
-  user.post('/login', passport.authenticate('local', {failureRedirect: '/users/login', failureFlash: true}), 
+  user.post('/users/login', passport.authenticate('local', {failureRedirect: '/users/login', failureFlash: true}), 
   async (req, res) => {
  
   const {email} = req.body
