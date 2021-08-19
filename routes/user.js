@@ -51,12 +51,12 @@ user.get("/", function (req, res) {
   });
   
   //get login page
-  user.get("/users/login", checkAuthenticated, function (req, res) {
+  user.get("/users/login", function (req, res) {
     res.render("users/login");
   });
   
   //get user dashboard
-  user.get('/users/dashboard', checkNotAuthenticated, async function (req, res) {
+  user.get('/users/dashboard', async function (req, res) {
     
     console.log(name)
     
