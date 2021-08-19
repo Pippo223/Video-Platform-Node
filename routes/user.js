@@ -175,7 +175,7 @@ user.get("/", function (req, res) {
   });
 
 //User Login
-  user.post('/login', passport.authenticate('local', {failureRedirect: 'login', failureFlash: true}), 
+  user.post('/login', passport.authenticate('local', {failureRedirect: '/login', failureFlash: true}), 
   async (req, res) => {
  
   const {email} = req.body
