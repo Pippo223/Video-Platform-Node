@@ -51,13 +51,14 @@ user.get("/", function (req, res) {
   });
   
   //get login page
-  user.get("/users/login", function (req, res) {
+  user.get("/users/login", checkAuthenticated, function (req, res) {
     res.render("users/login");
   });
   
   //get user dashboard
-  user.get('/users/dashboard', async function (req, res) {
-    name = req.user.fname;
+  user.get('/users/dashboard', checkNotAuthenticated, async function (req, res) {
+    
+    console.log(name)
     
      try{
      let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
@@ -184,6 +185,7 @@ user.get("/", function (req, res) {
     if(data.rows[0].roles === null || data.rows[0].roles === 'admin')
     {
       console.log(data.rows)
+      name = data.rows[0].fname
       return res.redirect('/users/dashboard')
     }
       

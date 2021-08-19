@@ -93,7 +93,7 @@ admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
 
     let data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
     try {
-      if(data.rows[0].role === 'admin')
+      if(data.rows[0].roles === 'admin')
       {
         return res.redirect('dashboard')
     }
