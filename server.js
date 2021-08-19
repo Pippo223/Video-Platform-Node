@@ -24,7 +24,7 @@ app.use(express.static(__dirname + '/public/'))
 const user = require('./routes/user');//calling the user
 const adminRoute = require('./routes/admin'); //calling the admin route 
 const apiRoute = require('./routes/api'); //calling the api route 
-const { pool } = require('./config/dbConfig');
+//const { pool } = require('./config/dbConfig');
 
 //Setup the various routes
 app.use('/users', user)
