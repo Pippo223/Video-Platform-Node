@@ -186,7 +186,7 @@ user.get("/", function (req, res) {
     {
       console.log(data.rows)
       name = data.rows[0].fname
-      return res.redirect('dashboard')
+      return res.redirect('/dashboard')
     }
       
   
@@ -208,9 +208,12 @@ user.get("/", function (req, res) {
   
   function checkNotAuthenticated(req, res, next) {
       if (req.isAuthenticated()) {
-        return res.redirect('dashboard');
+        next()
+        return
       }
+      else {
       res.redirect('login');
     }
+  }
 
   module.exports = user;
