@@ -187,9 +187,10 @@ user.get("/", function (req, res) {
       console.log(data.rows)
       name = data.rows[0].fname
       return res.redirect('/dashboard')
+    } else {
+      console.log('Unknown Error')
     }
       
-  
   }
   catch (err) {
     console.log(err)
@@ -201,19 +202,17 @@ user.get("/", function (req, res) {
 //For route protection
   function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-      return res.redirect('dashboard');
+      return res.redirect('/dashboard');
     }
-    next();
+
+    //next();
   }
   
   function checkNotAuthenticated(req, res, next) {
       if (req.isAuthenticated()) {
-        next()
-        return
+       return next()
       }
-      else {
-      res.redirect('login');
-    }
+      res.redirect('/login');
   }
 
   module.exports = user;
