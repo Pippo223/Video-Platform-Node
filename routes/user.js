@@ -183,7 +183,7 @@ user.get("/", function (req, res) {
   try {
     if(data.rows[0].role === null || data.rows[0].role === 'admin')
     {
-      return res.redirect('dashboard')
+      return res.redirect('/users/dashboard')
     }
       
   
