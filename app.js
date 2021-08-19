@@ -14,7 +14,7 @@ const { pool } = require('./config/dbConfig');
 
 
 const port = process.env.PORT || 5000;
-const HOST = process.env.DB_HOST || '0.0.0.0';
+const HOST = '0.0.0.0' || process.env.DB_HOST;
 
 app.use(express.urlencoded({extended: true}));//use qs library(querystring with added security) to parse data
 
@@ -71,5 +71,5 @@ app.use(passport.initialize());
 //app.use(flash());
 
 app.listen(port, HOST, function () {
-  console.log('Listening on port ' + port + 'at host '+HOST);
+  console.log('Listening on port ' + port + ' at host '+ HOST);
 });
