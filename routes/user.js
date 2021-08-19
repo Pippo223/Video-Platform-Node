@@ -208,7 +208,7 @@ user.get("/", function (req, res) {
   
   function checkNotAuthenticated(req, res, next) {
       if (req.isAuthenticated()) {
-        return next();
+        return res.redirect('dashboard');
       }
       res.redirect('login');
     }

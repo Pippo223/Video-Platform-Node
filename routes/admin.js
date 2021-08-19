@@ -62,11 +62,11 @@ admin.use(passport.session());
 admin.use(flash());
 
 
-admin.get('/', function(req, res) {
-    res.json({message: `You are in the admin route. Append '/login' to the URL to login as admin`})
-})
+// admin.get('/', function(req, res) {
+//     res.json({message: `You are in the admin route. Append '/login' to the URL to login as admin`})
+// })
 
- admin.get('/login', checkAuthenticated, function(req, res) {
+ admin.get('/', checkAuthenticated, function(req, res) {
      res.render('admin/adminLogin')
  })
 
@@ -86,7 +86,7 @@ admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
   }
  })
 
-  admin.post('/login', passport.authenticate('local'), async (req, res) => {
+  admin.post('/login', passport.authenticate('local',{failureRedirect: '/admin/login', failureFlash: true}), async (req, res) => {
 
     const {email} = req.body
     let errors = []
@@ -168,7 +168,8 @@ function checkAuthenticated(req, res, next) {
 
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-      return next();
+      return res.redirect("/admin/dashboard");
+      //next()
     }
     res.redirect("/admin/login");
   }
