@@ -6,7 +6,7 @@ const passport = require('passport');
 
 const initializePassport = require('./config/PassportConfig');
 const pg = require('pg');
-//const pgSession = require('connect-pg-simple')(session);
+const pgSession = require('connect-pg-simple')(session);
 
 
 require("dotenv").config(); //use a an environment variiable (from the '.env' file)
@@ -47,7 +47,10 @@ app.use(session({
     maxAge:60000
   },
   secret: process.env.SESSION_SECRET,
-  store: new (require('connect-pg-simple')(session))(),
+  store: new pgSession({
+    pool : pool,                
+    tableName : 'user_sessions'   
+  }),
   resave: false,
   saveUninitialized: true
 })); 

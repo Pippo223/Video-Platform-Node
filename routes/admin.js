@@ -6,6 +6,7 @@ const passport = require('passport'); //for passport authentication
 const { pool } = require('../config/dbConfig');
 require('dotenv').config();
 const multer  = require('multer') //require multer library for file uploads
+const pgSession = require('connect-pg-simple')(session);
 
 //Multer configuration
 const multerStorage = multer.diskStorage({
@@ -47,7 +48,10 @@ admin.use(session({
     maxAge:60000
   },
   secret: process.env.SESSION_SECRET,
-  store: new (require('connect-pg-simple')(session))(),
+  store: new pgSession({
+    pool : pool,                
+    tableName : 'user_sessions'   
+  }),
   resave: false,
   saveUninitialized: true
 })); 

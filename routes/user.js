@@ -8,6 +8,7 @@ const flash = require('express-flash'); //called to flash error or success messa
 const passport = require('passport'); //For authentication of credentials
 const initializePassport = require('../config/PassportConfig'); //the passport configuration file
 require("dotenv").config(); //use a an environment variiable (from the '.env' file)
+const pgSession = require('connect-pg-simple')(session);
 
 //user.use(express.static(__dirname + '/public/'))
 
@@ -23,13 +24,16 @@ user.use(express.urlencoded({extended: true}));
     maxAge:60000
    },
   secret: process.env.SESSION_SECRET,
-  store: new (require('connect-pg-simple')(session))(),
+  store: new pgSession({
+    pool : pool,                
+    tableName : 'user_sessions'   
+  }),
   resave: false,
   saveUninitialized: true
 })); 
 
 user.use(passport.initialize());
-user.use(passport.session());
+//user.use(passport.session());
 
 user.use(flash());
 
