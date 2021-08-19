@@ -17,11 +17,11 @@ user.use(express.urlencoded({extended: true}));
 
 //create sessions for users
 //user.set('trust proxy', 1)//unleaks memory
-u.use(session({
-  cookie:{
+ user.use(session({
+   cookie:{
     secure:true,
     maxAge:60000
-  },
+   },
   secret: process.env.SESSION_SECRET,
   store: new pgSession({
     pool: pool,
