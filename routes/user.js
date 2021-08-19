@@ -51,12 +51,12 @@ user.get("/", function (req, res) {
   });
   
   //get login page
-  user.get("/users/login", checkAuthenticated, function (req, res) {
+  user.get("/users/login", function (req, res) {
     res.render("users/login");
   });
   
   //get user dashboard
-  user.get('/users/dashboard', checkNotAuthenticated, async function (req, res) {
+  user.get('/users/dashboard', async function (req, res) {
     name = req.user.fname;
     
      try{
@@ -181,8 +181,9 @@ user.get("/", function (req, res) {
   
   let data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
   try {
-    if(data.rows[0].role === null || data.rows[0].role === 'admin')
+    if(data.rows[0].roles === null || data.rows[0].roles === 'admin')
     {
+      console.log(data.rows)
       return res.redirect('/users/dashboard')
     }
       
