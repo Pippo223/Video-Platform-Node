@@ -1,37 +1,33 @@
 {
   "name": "video-platform-node",
   "version": "1.0.0",
-  "description": "capstone project",
-  "engines": {
-    "node": "14.16.1",
-    "npm": "7.20.3"
-  },
+  "description": "Capstone project",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "run start server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pippo223/Video-Platform-Node.git"
   },
   "author": "Philip O. Asare",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pippo223/Video-Platform-Node/issues"
+  },
+  "homepage": "https://github.com/Pippo223/Video-Platform-Node#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
     "connect-pg-simple": "^6.2.1",
-    "cors": "^2.8.5",
-    "dns": "^0.2.2",
     "dotenv": "^10.0.0",
-    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.2",
+    "flash": "^1.1.0",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
-    "nodemon": "^2.0.12",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "pg": "^8.7.1",
-    "pg-hstore": "^2.3.4",
-    "save": "^2.4.0"
+    "pg": "^8.7.1"
   }
 }
