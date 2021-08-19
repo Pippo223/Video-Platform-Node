@@ -49,7 +49,7 @@ app.use(session({
     secure:true,
     maxAge:60000
   },
-  secret: 'secret',
+  secret: process.env.SESSION_SECRET || 'secret',
   store: new pgSession({
     pool : pool,                
     tableName : 'user_session'   
