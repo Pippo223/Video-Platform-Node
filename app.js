@@ -13,7 +13,7 @@ require("dotenv").config(); //use a an environment variiable (from the '.env' fi
 const { pool } = require('./config/dbConfig');
 
 
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 const HOST = process.env.DB_HOST || '0.0.0.0';
 
 app.use(express.urlencoded({extended: true}));//use qs library(querystring with added security) to parse data
@@ -70,6 +70,6 @@ app.use(passport.initialize());
 
 //app.use(flash());
 
-app.listen(PORT, HOST, function () {
-  console.log(`Listening on port ${PORT}`);
+app.listen(port, HOST, function () {
+  console.log('Listening on port ' + port + 'at host '+HOST);
 });
