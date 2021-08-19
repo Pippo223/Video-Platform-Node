@@ -86,7 +86,7 @@ admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
   }
  })
 
-  admin.post('/login', passport.authenticate('local',{failureRedirect: '/admin/login', failureFlash: true}), async (req, res) => {
+  admin.post('/login', passport.authenticate('local',{failureRedirect: '/admin', failureFlash: true}), async (req, res) => {
 
     const {email} = req.body
     let errors = []
@@ -113,7 +113,7 @@ admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
 admin.get('/logout', function(req, res) {
   req.logOut();
   req.flash('success_msg', 'You are logged out');
-  res.redirect('/admin/login');
+  res.redirect('/admin');
 }) 
 
 //using multer to upload videos in the admin dashboard
@@ -171,7 +171,7 @@ function checkNotAuthenticated(req, res, next) {
      // return res.redirect("/admin/dashboard");
       return next()
     }
-    res.redirect("/admin/login");
+    res.redirect("/admin");
   }
 
 
