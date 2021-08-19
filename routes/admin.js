@@ -50,7 +50,7 @@ admin.use(session({
   secret: process.env.SESSION_SECRET,
   store: new pgSession({
     pool : pool,                
-    tableName : 'user_sessions'   
+    tableName : 'user_session'   
   }),
   resave: false,
   saveUninitialized: true
