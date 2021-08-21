@@ -197,3 +197,10 @@ a:hover {
   #copy-link {
       width: 10rem;
   }
+
+  .nvd {
+      margin-left: 30%;
+      text-align: center;
+      font-style: italic;
+        font-size: 1.2rem;
+  }

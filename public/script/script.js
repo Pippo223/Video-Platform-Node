@@ -2,9 +2,25 @@
  const nextbtn = document.querySelector('#next');
  const prevbtn = document.querySelector('#prev');
  const btnHover = document.getElementById('c-l-btn');
+ let noVideosDisplay = document.createElement('div')
+let noVidDispAdmin = document.createElement('p')
 
  let counter = +document.querySelector('#counter').textContent;
  const dbcount = +document.querySelector('#count').textContent;
+
+ if(dbcount === 0) {
+     noVideosDisplay.setAttribute('class', 'nvd')
+     noVidDispAdmin.setAttribute('class', 'nvd')
+
+    noVideosDisplay.innerHTML = 'No videos uploaded by admin'
+    noVidDispAdmin.innerHTML = 'No video uploaded'
+
+    document.getElementById('vid-display').appendChild(noVideosDisplay)
+    document.getElementById('vid-disp-admin').appendChild(noVidDispAdmin)
+ }
+ else {
+     noVideosDisplay.style.display = 'none'
+ }
 
  if(counter >= dbcount)
  {
