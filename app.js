@@ -14,7 +14,8 @@ const { pool } = require('./config/dbConfig');
 
 
 const port = process.env.PORT || 5000;
-const HOST = '0.0.0.0' || process.env.DB_HOST;
+
+//const HOST = '0.0.0.0' || process.env.DB_HOST;
 
 app.use(express.urlencoded({extended: true}));//use qs library(querystring with added security) to parse data
 
@@ -30,8 +31,6 @@ const adminRoute = require('./routes/admin'); //calling the admin route
 const apiRoute = require('./routes/api'); //calling the api route 
 //const { pool } = require('./config/dbConfig');
 
-//process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 //Setup the various routes
 app.use('/', user)
 //app.use('/users', user)
@@ -43,13 +42,12 @@ initializePassport(passport);
 //create sessions for users
 app.set('trust proxy', 1)//unleaks memory
 
-
 app.use(session({
-  cookie:{
-    secure:true,
-    maxAge:60000
-  },
-  secret: process.env.SESSION_SECRET || 'secret',
+   cookie:{
+     secure:true,
+     maxAge:60000
+   },
+  secret: 'secret',
   store: new pgSession({
     pool : pool,                
     tableName : 'user_session'   
@@ -58,12 +56,12 @@ app.use(session({
   saveUninitialized: true
 })); 
 
-app.use(function(req,res,next){
-  if(!req.session){
-      return next(new Error('Oh no')) //handle error
-  }
-  next()
-})
+ app.use(function(req,res,next){
+   if(!req.session){
+       return next(new Error('Oh no')) //handle error
+   }
+   next()
+ })
 
 //use the passport middleware for authentication
 app.use(passport.initialize());
@@ -73,6 +71,6 @@ app.use(passport.initialize());
 
 //app.use(flash());
 
-app.listen(port, HOST, function () {
-  console.log('Listening on port ' + port + ' at host '+ HOST);
+app.listen(port, function () {
+  console.log('Listening on port ' + port );
 });

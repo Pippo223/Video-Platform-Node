@@ -42,19 +42,19 @@ admin.use(express.static(__dirname+'/uploads'))
 
 //create sessions for users
 //admin.set('trust proxy', 1)//unleaks memory
-admin.use(session({
-  cookie:{
-    secure:true,
-    maxAge:60000
-  },
-  secret: process.env.SESSION_SECRET || 'secret',
-  store: new pgSession({
-    pool : pool,                
-    tableName : 'user_session'   
-  }),
-  resave: false,
-  saveUninitialized: true
-})); 
+// admin.use(session({
+//   // cookie:{
+//   //   secure:true,
+//   //   maxAge:60000
+//   // },
+//    secret: 'secret',
+//   // store: new pgSession({
+//   //   pool : pool,                
+//   //   tableName : 'user_session'   
+//   // }),
+//   resave: false,
+//   saveUninitialized: true
+// })); 
 
 admin.use(passport.initialize());
 admin.use(passport.session());
@@ -93,7 +93,7 @@ admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
 
     let data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
     try {
-      if(data.rows[0].roles === 'admin')
+      if(data.rows[0].role === 'admin')
       {
         return res.redirect('dashboard')
     }
@@ -168,7 +168,6 @@ function checkAuthenticated(req, res, next) {
 
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-     // return res.redirect("/admin/dashboard");
       return next()
     }
     res.redirect("/admin");

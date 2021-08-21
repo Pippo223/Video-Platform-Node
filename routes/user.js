@@ -18,22 +18,22 @@ user.use(express.urlencoded({extended: true}));
 
 //create sessions for users
 //user.set('trust proxy', 1)//unleaks memory
- user.use(session({
-   cookie:{
-    secure:true,
-    maxAge:60000
-   },
-  secret: process.env.SESSION_SECRET || 'secret',
-  store: new pgSession({
-    pool : pool,                
-    tableName : 'user_session'   
-  }),
-  resave: false,
-  saveUninitialized: true
-})); 
+  user.use(session({
+//   //  cookie:{
+//   //   secure:true,
+//   //   maxAge:60000
+//   //  },
+   secret: 'secret',
+//   // store: new pgSession({
+//   //   pool : pool,                
+//   //   tableName : 'user_session'   
+//   // }),
+   resave: false,
+   saveUninitialized: true
+ })); 
 
 user.use(passport.initialize());
-//user.use(passport.session());
+user.use(passport.session());
 
 user.use(flash());
 
@@ -182,14 +182,16 @@ user.get("/", function (req, res) {
   
   let data = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
   try {
-    if(data.rows[0].roles === null || data.rows[0].roles === 'admin')
+    if(data.rows[0].role === null || data.rows[0].role === 'admin')
     {
-      console.log(data.rows)
-      name = data.rows[0].fname
-      return res.redirect('/dashboard')
-    } else {
-      console.log('Unknown Error')
-    }
+     // console.log(data.rows)
+      //name = data.rows[0].fname
+      return res.redirect('dashboard')
+    } 
+     else {
+
+       console.log('Unknown error relating to admin role')
+     }
       
   }
   catch (err) {
@@ -202,17 +204,29 @@ user.get("/", function (req, res) {
 //For route protection
   function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-      return res.redirect('/dashboard');
+      console.log('what abt here')
+      return res.redirect('dashboard');
     }
-   //res.redirect('login')
-   next()
+   
+  next()
   }
   
   function checkNotAuthenticated(req, res, next) {
       if (req.isAuthenticated()) {
+        
        return next()
       }
-      res.redirect('login');
+
+      res.redirect('/login');
   }
+
+  // function checkNotAuthenticated(req, res, next) {
+  //   if (req.isAuthenticated()) {
+  //     return next()
+  //   }
+  //   res.redirect("login");
+  // }
+
+
 
   module.exports = user;

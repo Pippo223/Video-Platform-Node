@@ -58,7 +58,6 @@
 
  function outFunc() {
  let tooltip = document.getElementById("myTooltip");
- //tooltip.innerHTML = "Copy to clipboard";
  tooltip.style.visibility = 'visible'
  }
 
