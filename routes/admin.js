@@ -11,7 +11,9 @@ const pgSession = require('connect-pg-simple')(session);
 //Multer configuration
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/uploads');
+   // cb(null, 'public/uploads');  //C:\Users\SENIOR\Desktop\Video-Platform-Node\public\uploads
+    cb(null, 'http://localhost:3000/uploads');
+    //http://localhost:3000/uploads/myFile-1629677138235.mp4
   },
 
   filename: (req, file, cb) => {
@@ -48,10 +50,10 @@ admin.use(express.static(__dirname+'/uploads'))
       maxAge:60000
     },
     secret: 'secret',
-    store: new pgSession({
-      pool : pool,                
-      tableName : 'user_session'   
-    }),
+    // store: new pgSession({
+    //   pool : pool,                
+    //   tableName : 'user_session'   
+    // }),
    resave: false,
    saveUninitialized: true
  })); 

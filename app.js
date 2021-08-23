@@ -33,25 +33,24 @@ const apiRoute = require('./routes/api'); //calling the api route
 
 //Setup the various routes
 app.use('/', user)
-//app.use('/users', user)
 app.use('/admin', adminRoute);
 app.use('/api', apiRoute);
 
 initializePassport(passport);
 
 //create sessions for users
-app.set('trust proxy', 1)//unleaks memory
+//app.set('trust proxy', 1)//unleaks memory
 
 app.use(session({
-   cookie:{
-     secure:true,
-     maxAge:60000
-   },
+  //  cookie:{
+  //    secure:true,
+  //    maxAge:60000
+  //  },
   secret: 'secret',
-   store: new pgSession({
-     pool : pool,                
-     tableName : 'user_session'   
-   }),
+  //  store: new pgSession({
+  //    pool : pool,                
+  //    tableName : 'user_session'   
+  //  }),
   resave: false,
   saveUninitialized: true
 })); 
