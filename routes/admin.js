@@ -12,7 +12,7 @@ const pgSession = require('connect-pg-simple')(session);
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
    // cb(null, 'public/uploads');  //C:\Users\SENIOR\Desktop\Video-Platform-Node\public\uploads
-    cb(null, 'http://localhost:3000/uploads');
+    cb(null, 'http://localhost:3000/public/uploads');
     //http://localhost:3000/uploads/myFile-1629677138235.mp4
   },
 
