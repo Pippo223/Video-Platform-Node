@@ -19,15 +19,15 @@ user.use(express.urlencoded({extended: true}));
 //create sessions for users
 //user.set('trust proxy', 1)//unleaks memory
   user.use(session({
-    //  cookie:{
-    //   secure:true,
-    //   maxAge:60000
-    //  },
+     cookie:{
+      secure:true,
+      maxAge:60000
+     },
    secret: 'secret',
-    // store: new pgSession({
-    //   pool : pool,                
-    //   tableName : 'user_session'   
-    // }),
+    store: new pgSession({
+      pool : pool,                
+      tableName : 'user_session'   
+    }),
    resave: false,
    saveUninitialized: true
  })); 
@@ -74,10 +74,8 @@ user.get("/", function (req, res) {
   //increment of counter value goes to this route to be used
   user.post('/increment', async(req,res)=>{
     counter++;    
-    console.log(counter)
+   
      try{
-        //let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
-        //data = data.rows;
         let data = await pool.query(`SELECT * FROM videos`)
         data = data.rows
         

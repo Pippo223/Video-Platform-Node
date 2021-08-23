@@ -42,22 +42,22 @@ initializePassport(passport);
 //app.set('trust proxy', 1)//unleaks memory
 
 app.use(session({
-  //  cookie:{
-  //    secure:true,
-  //    maxAge:60000
-  //  },
+   cookie:{
+     secure:true,
+     maxAge:60000
+   },
   secret: 'secret',
-  //  store: new pgSession({
-  //    pool : pool,                
-  //    tableName : 'user_session'   
-  //  }),
+   store: new pgSession({
+     pool : pool,                
+     tableName : 'user_session'   
+   }),
   resave: false,
   saveUninitialized: true
 })); 
 
  app.use(function(req,res,next){
    if(!req.session){
-       return next(new Error('Oh no')) //handle error
+       return next(new Error('Oh no')) //handle crash error
    }
    next()
  })
@@ -68,7 +68,6 @@ app.use(passport.initialize());
 //use the session middleware to create session
 //app.use(passport.session());
 
-//app.use(flash());
 
 app.listen(port, function () {
   console.log('Listening on port ' + port );
