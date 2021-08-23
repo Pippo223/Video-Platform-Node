@@ -19,17 +19,31 @@
 
     
     <h3 class="head-div">Upload Video Files</h3>
+    <% if (error) { %>
+        <p id="err1">
+            <%= error %>
+            <% error = '' %>
+        </p>
+        <% } %>
+
+        <% if (message) { %>
+            <p id="feedback">
+                <%= message %>
+            </p>
+            <% } %>
+
+       
     
     <form action="/admin/dashboard" method="POST" enctype="multipart/form-data">
     
     <div class="file">
-        <input type="file" name="myFile" id="myFile">
+        <input type="file" name="myFile" id="myFile" required>
     </div>
     <div class="file">
-        <input type="text" name="title" id="title" placeholder="Video Title">
+        <input type="text" name="title" id="title" placeholder="Video Title" required>
     </div>
     <div class="file">
-        <textarea name="desc" id="desc" placeholder="Description"></textarea>
+        <textarea name="desc" id="desc" placeholder="Description" required></textarea>
     </div>
     <div>
         <input type="submit" value="Upload" >
@@ -39,7 +53,7 @@
     <div class = "admin">
         
             <% files.forEach(item => { %>
-    <div id="vid-disp-admin">
+    <div>
         <ul>
                 <hr>
             <li><%= item.id %></li>
@@ -55,15 +69,17 @@
             <% }) %> 
           
          
-    
+         
 
     </div>
 
-
+    <div id="nvd">No videos uploaded</div>
+    
+    <p id="count"><%= files.length %></p>
 
 </main>
-<script src="/script/script.js"></script>
+
 </body>
-    
+<script src="/script/admin_script.js" defer></script>
 
 </html>

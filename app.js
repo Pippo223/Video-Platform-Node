@@ -13,7 +13,7 @@ require("dotenv").config(); //use a an environment variiable (from the '.env' fi
 const { pool } = require('./config/dbConfig');
 
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 //const HOST = '0.0.0.0' || process.env.DB_HOST;
 
@@ -48,10 +48,10 @@ app.use(session({
      maxAge:60000
    },
   secret: 'secret',
-  store: new pgSession({
-    pool : pool,                
-    tableName : 'user_session'   
-  }),
+   store: new pgSession({
+     pool : pool,                
+     tableName : 'user_session'   
+   }),
   resave: false,
   saveUninitialized: true
 })); 

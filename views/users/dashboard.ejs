@@ -27,22 +27,22 @@
 <div class="video-div">
     <ul>
         <% if (files.length > 0) { %>
-  <li>  <%= files[0].title %> </li>
-  <li> <%= files[0].description %> </li>
+  <li>  <%= files[counter].title %> </li>
+  <li> <%= files[counter].description %> </li>
   <br>
   <li> 
 
       <input type="text" id="copy-link" value = "http://localhost:3000<%= files[0].filepath %>"> 
 
     <button id="c-l-btn" >
-        Copy video link
+        Share video link
     </button> 
     
     <div id="myTooltip"> Copy to clipboard </div>
 </li>
   <br>
    <li id="vid-display"> <video controls id="videoPlayer" name="vid" width="750"  >
-            <source type="video/mp4" src=<%= files[0].filepath %> /> 
+            <source type="video/mp4" src=<%= files[counter].filepath %> /> 
     </video>
 </li>  <% } %>
 
@@ -53,13 +53,17 @@
 </div>
 
     <p id="counter"><%= counter %></p>
-    <p id="count"><%= count.length %></p>
+    <p id="count"><%= files.length %></p>
 </div>
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/script/script.js">
-        
-    </script>
+   
   
 </body>
+
+<script src="/script/user_script.js" defer>
+        
+</script>
+
+
 </html>

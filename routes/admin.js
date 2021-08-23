@@ -42,19 +42,19 @@ admin.use(express.static(__dirname+'/uploads'))
 
 //create sessions for users
 //admin.set('trust proxy', 1)//unleaks memory
-// admin.use(session({
-//   // cookie:{
-//   //   secure:true,
-//   //   maxAge:60000
-//   // },
-//    secret: 'secret',
-//   // store: new pgSession({
-//   //   pool : pool,                
-//   //   tableName : 'user_session'   
-//   // }),
-//   resave: false,
-//   saveUninitialized: true
-// })); 
+ admin.use(session({
+     cookie:{
+      secure:true,
+      maxAge:60000
+    },
+    secret: 'secret',
+    store: new pgSession({
+      pool : pool,                
+      tableName : 'user_session'   
+    }),
+   resave: false,
+   saveUninitialized: true
+ })); 
 
 admin.use(passport.initialize());
 admin.use(passport.session());
@@ -62,23 +62,19 @@ admin.use(passport.session());
 admin.use(flash());
 
 
-// admin.get('/', function(req, res) {
-//     res.json({message: `You are in the admin route. Append '/login' to the URL to login as admin`})
-// })
-
  admin.get('/', checkAuthenticated, function(req, res) {
      res.render('admin/adminLogin')
  })
 
 admin.get('/dashboard', checkNotAuthenticated, async function(req, res) {
 
+ 
   try{ 
     let data = await pool.query(`SELECT * FROM videos`)
-    console.log(data.rows)
 
     data = data.rows
    
-    res.render('admin/adminDashboard', { files: data  })
+    res.render('admin/adminDashboard', { files: data, error: '', message: ''})
   }
   catch(err) {
   
@@ -118,10 +114,14 @@ admin.get('/logout', function(req, res) {
 
 //using multer to upload videos in the admin dashboard
 admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
-  
-  try{
+   
+  let feedback = '' //feedback message after post
     const filePath = req.file.path
     const { title, desc } = req.body
+  try{
+    let data = await pool.query(`SELECT * FROM videos`)
+    data = data.rows
+    //console.log(data)
 
     pool.query(`SELECT * FROM videos WHERE title = $1`, [title], 
     (err, results) => {
@@ -129,17 +129,19 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
         throw err
       }
       if(results.rows.length > 0) {
-        return res.json({message: 'A file with the same title already exists in database'})
+         feedback = 'A file with the same title already exists in database'
+       res.render('admin/adminDashboard', { files: data, error: feedback, message: '' })
       }
 
       else {
-        const data = pool.query(`INSERT INTO videos (title, description, filepath) VALUES ($1, $2, $3)
+         pool.query(`INSERT INTO videos (title, description, filepath) VALUES ($1, $2, $3)
     RETURNING *`, [ title, desc, filePath.replace('public\\uploads\\', '/uploads/') ],
     (err, results) => {
       if(err) {
-        return res.json({status: 'Fail', message: err.message })
+         res.render('admin/adminDashboard', err.message)
       }
-    return res.json({status: 'Success', message: 'File details sent to database'})
+      feedback = 'File details sent to database'
+      res.render('admin/adminDashboard', { files: data, error: '', message: feedback })
     })
 
     
@@ -150,10 +152,10 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
   }
 
   catch(err) {
-    console.log(err.message)
+    console.log(err)
     return res.json({ 
       status: 'Fail',
-      err })
+      err: err.message })
   }
  
   })

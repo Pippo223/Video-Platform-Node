@@ -19,15 +19,15 @@ user.use(express.urlencoded({extended: true}));
 //create sessions for users
 //user.set('trust proxy', 1)//unleaks memory
   user.use(session({
-//   //  cookie:{
-//   //   secure:true,
-//   //   maxAge:60000
-//   //  },
+     cookie:{
+      secure:true,
+      maxAge:60000
+     },
    secret: 'secret',
-//   // store: new pgSession({
-//   //   pool : pool,                
-//   //   tableName : 'user_session'   
-//   // }),
+    store: new pgSession({
+      pool : pool,                
+      tableName : 'user_session'   
+    }),
    resave: false,
    saveUninitialized: true
  })); 
@@ -38,7 +38,7 @@ user.use(passport.session());
 user.use(flash());
 
 let name = ''; //A login name will be passed to it
-let counter = 1;//videos will start playing from the first 
+let counter = 0;//videos will start playing from the first 
 
 //get index page
 user.get("/", function (req, res) {
@@ -58,15 +58,12 @@ user.get("/", function (req, res) {
   //get user dashboard
   user.get('/dashboard', checkNotAuthenticated, async function (req, res) {
     
-    console.log(name)
-    
      try{
-     let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
+    // let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
+     //data = data.rows
+     let data = await pool.query(`SELECT * FROM videos`)
      data = data.rows
-     let count = await pool.query(`SELECT * FROM videos`)
-     count = count.rows
-     res.render('users/dashboard', { user: name, files: data, count: count, counter: counter  } );
-      
+     res.render('users/dashboard', { user: name, files: data, counter: counter  } );
      }
 
      catch(err) {
@@ -79,12 +76,12 @@ user.get("/", function (req, res) {
     counter++;    
     console.log(counter)
      try{
-        let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
-        data = data.rows;
-        let count = await pool.query(`SELECT * FROM videos`)
-        count = count.rows
+        //let data = await pool.query(`SELECT * FROM videos WHERE id = $1`, [counter])
+        //data = data.rows;
+        let data = await pool.query(`SELECT * FROM videos`)
+        data = data.rows
         
-        res.render('users/dashboard', { user: name, files: data, count: count, counter: counter } );
+        res.render('users/dashboard', { user: name, files: data, counter: counter } );
       }
 
      catch(err) {
@@ -185,7 +182,7 @@ user.get("/", function (req, res) {
     if(data.rows[0].role === null || data.rows[0].role === 'admin')
     {
      // console.log(data.rows)
-      //name = data.rows[0].fname
+      name = data.rows[0].fname
       return res.redirect('dashboard')
     } 
      else {
@@ -204,7 +201,6 @@ user.get("/", function (req, res) {
 //For route protection
   function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-      console.log('what abt here')
       return res.redirect('dashboard');
     }
    
@@ -220,12 +216,6 @@ user.get("/", function (req, res) {
       res.redirect('/login');
   }
 
-  // function checkNotAuthenticated(req, res, next) {
-  //   if (req.isAuthenticated()) {
-  //     return next()
-  //   }
-  //   res.redirect("login");
-  // }
 
 
 
