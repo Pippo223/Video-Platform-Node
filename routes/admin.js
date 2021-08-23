@@ -137,7 +137,8 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
 
       else {
          pool.query(`INSERT INTO videos (title, description, filepath) VALUES ($1, $2, $3)
-    RETURNING *`, [ title, desc, filePath.replace('C:\\Users\\SENIOR\\Desktop\\Video-Platform-Node\\public\\uploads\\', '/uploads/') ],
+    RETURNING *`, [ title, desc, filePath ],
+    //filePath.replace('C:\\Users\\SENIOR\\Desktop\\Video-Platform-Node\\public\\uploads\\', '/uploads/')
     (err, results) => {
       if(err) {
          res.render('admin/adminDashboard', err.message)
