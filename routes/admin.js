@@ -12,7 +12,7 @@ const pgSession = require('connect-pg-simple')(session);
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
    // cb(null, 'public/uploads');  //C:\Users\SENIOR\Desktop\Video-Platform-Node\public\uploads
-    cb(null, 'http://localhost:3000/public/uploads');
+    cb(null, 'C:/Users/SENIOR/Desktop/Video-Platform-Node/public/uploads');
     //http://localhost:3000/uploads/myFile-1629677138235.mp4
   },
 
@@ -137,7 +137,7 @@ admin.post('/dashboard', upload.single('myFile'), async function(req, res) {
 
       else {
          pool.query(`INSERT INTO videos (title, description, filepath) VALUES ($1, $2, $3)
-    RETURNING *`, [ title, desc, filePath.replace('public\\uploads\\', '/uploads/') ],
+    RETURNING *`, [ title, desc, filePath.replace('C:\\Users\\SENIOR\\Desktop\\Video-Platform-Node\\public\\uploads\\', '/uploads/') ],
     (err, results) => {
       if(err) {
          res.render('admin/adminDashboard', err.message)
